@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<courseStructure xmlns="https://w3id.org/xapi/profiles/cmi5/v1/CourseStructure.xsd">
+  <course id="https://southuniversity.edu/xapi/pharmacy/biochemistry/course">
+    <title><langstring lang="en-US">Biochemistry Companion</langstring></title>
+    <description><langstring lang="en-US">Interactive biochemistry learning companion and mastery practice for pharmacy students.</langstring></description>
+  </course>
+  <au id="https://southuniversity.edu/xapi/pharmacy/biochemistry/course/au" launchMethod="OwnWindow" moveOn="Completed">
+    <title><langstring lang="en-US">Biochemistry Companion</langstring></title>
+    <description><langstring lang="en-US">Ten-companion Biochemistry Companion Beta 1.0-RC2.6 with checkpoints, activities, quizzes, adaptive review, State API persistence, and xAPI telemetry.</langstring></description>
+    <url>launch.html</url>
+  </au>
+</courseStructure>

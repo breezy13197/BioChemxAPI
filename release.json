@@ -1,0 +1,14 @@
+{
+  "release_label": "Biochemistry Companion Beta 1.0-RC2.6",
+  "release_short": "RC2.6",
+  "content_version": "biochem-1.0-rc2.6",
+  "telemetry_version": "3.4",
+  "namespace": "https://southuniversity.edu/xapi/pharmacy/biochemistry",
+  "deployable_zip": "Biochemistry.Companion-Beta-1.0-RC2.6-cmi5.zip",
+  "reporting_stage": "2.5.5",
+  "reporting_zip": "pharmacy-readiness-stage2.5.5-rc2.6.zip",
+  "dashboard_stage": "3.4.2",
+  "dashboard_zip": "pharmacy-readiness-dashboard-stage3.4.2-rc2.6.zip",
+  "report_folder": "reports-rc26",
+  "dashboard_folder": "dashboard-rc26"
+}

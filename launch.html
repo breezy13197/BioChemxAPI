@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Launching Biochemistry Companion · Beta 1.0-RC2.6</title>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f6f8fa;color:#26343d;display:grid;place-items:center;min-height:100vh;margin:0}.box{max-width:560px;background:white;border:1px solid #dde4e9;border-radius:18px;padding:28px;box-shadow:0 12px 40px rgba(0,0,0,.08)}h1{font-size:22px;margin:0 0 8px}p{line-height:1.5}.err{color:#a22;white-space:pre-wrap}</style>
+</head><body><main class="box"><h1>Biochemistry Companion</h1><p style="margin:-2px 0 12px;color:#72808a;font-size:12px;font-weight:700;letter-spacing:.05em">BETA 1.0-RC2.6</p><p id="msg">Connecting to your learning record…</p><p id="err" class="err"></p></main>
+<script src="shared/cmi5-runtime.js"></script><script src="shared/learning-store.js"></script>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search),need=['endpoint','fetch','actor','registration','activityId'];
+  var missing=need.filter(function(k){return !p.get(k);});
+  if(missing.length){document.getElementById('msg').textContent='Standalone mode detected. Opening the companion…';setTimeout(function(){location.replace('hub.html');},150);return;}
+  var actor;try{actor=JSON.parse(p.get('actor'));}catch(e){document.getElementById('err').textContent='Invalid cmi5 actor parameter.';return;}
+  var params={endpoint:p.get('endpoint'),fetchUrl:p.get('fetch'),actor:actor,registration:p.get('registration'),activityId:p.get('activityId')};
+  var keys=['hub.v1','companion.enzymes.v1','companion.aminoacids.v1','companion.hemoglobin.v1','companion.signaling.v1','companion.nucleotides.v1','companion.glycogen.v1','companion.cac.v1','companion.oxphos.v1','companion.aametabolism.v1','companion.integration.v1','cmi5.meta.v1'];
+  CMI5Runtime.bootstrap(params)
+    .then(function(){document.getElementById('msg').textContent='Restoring your progress…';return LearningStore.preload(keys);})
+    .then(function(){return CMI5Runtime.initialized();})
+    .then(function(){location.replace('hub.html');})
+    .catch(function(e){console.error(e);document.getElementById('msg').textContent='The course could not initialize.';var m=e&&e.message?e.message:String(e);document.getElementById('err').textContent=/fetch URL already used|authorization fetch/i.test(m)?'This launch link can only be used once. Close this window and relaunch the course from SCORM Cloud.':m;});
+})();
+</script></body></html>
