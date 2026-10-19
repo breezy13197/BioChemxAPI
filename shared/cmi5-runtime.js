@@ -183,7 +183,7 @@
         initialSyncChannels();
         if(state.sessionExpired){try{g.dispatchEvent(new CustomEvent('cmi5sessionerror',{detail:{status:state.sessionErrorStatus}}));}catch(e){}}
       }else if(!document.getElementById('cmi5StandaloneNotice')){
-        var n=document.createElement('div');n.id='cmi5StandaloneNotice';n.textContent='Standalone mode: this page is not connected to SCORM Cloud. Progress will be stored only in this browser and will not be recorded to your course account. Relaunch from your course to enable syncing.';n.style.cssText='position:fixed;left:12px;right:12px;top:10px;z-index:99998;background:#fff7df;border:1px solid #e3bf62;color:#665019;border-radius:10px;padding:9px 12px;font:600 12px system-ui;box-shadow:0 3px 12px rgba(0,0,0,.08)';document.body.appendChild(n);
+        var n=document.createElement('div');n.id='cmi5StandaloneNotice';n.textContent='Standalone mode: this page is not connected to SCORM Cloud. Progress will be stored only in this browser and will not be recorded to your course account. Relaunch from your course to enable syncing.';n.setAttribute('role','status');n.style.cssText='position:relative;margin:10px 12px;background:#fff7df;border:1px solid #e3bf62;color:#665019;border-radius:10px;padding:9px 12px;font:600 12px system-ui;box-shadow:0 3px 12px rgba(0,0,0,.08)';document.body.insertBefore(n,document.body.firstChild);
       }
     });
     g.addEventListener('biochem-sync-status',function(ev){var d=ev&&ev.detail||{};if(d.channel==='state'||d.channel==='xapi')syncChannels[d.channel]=d.status||syncChannels[d.channel];renderSyncStatus();});

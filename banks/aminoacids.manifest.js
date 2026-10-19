@@ -20,7 +20,7 @@ var MANIFEST = {
   modules: [
     { id:'lab', title:'Amino Acid Reference Lab', sections:[
       { key:'labhome', label:'About this lab' },
-      { key:'lab', label:'Explorer &; practice', checks:['cL1','cL2','cL3'], activity:'aapractice' }
+      { key:'lab', label:'Explorer &amp; practice', checks:['cL1','cL2','cL3'], activity:'aapractice' }
     ]},
 
     { id:'m1', title:'Module 1 · Anatomy & classification', sections:[
@@ -33,7 +33,7 @@ var MANIFEST = {
 
     { id:'m2', title:'Module 2 · Ionization & pKa', sections:[
       { key:'m2home', label:'Module overview' },
-      { key:'m2s1', label:'Backbone &; the zwitterion', checks:['c4','c4b'], activity:'chargebb' },
+      { key:'m2s1', label:'Backbone &amp; the zwitterion', checks:['c4','c4b'], activity:'chargebb' },
       { key:'m2s2', label:'Acidic side chains', checks:['c5','c5b'], activity:'chargesc' },
       { key:'m2s3', label:'Basic side chains', checks:['c6','c6b','c6c'], activity:'ph' },
       { key:'m2quiz', label:'Module 2 quiz', quiz:'m2' }

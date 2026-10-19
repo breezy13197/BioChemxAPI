@@ -177,6 +177,10 @@
   .ph-net{margin-top:10px;font-size:.88rem;font-weight:700;color:var(--ink)}
   @media (max-width:640px){.ph-row{grid-template-columns:96px 1fr 46px}}
 </style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="stylesheet" href="shared/responsive.css">
+<script defer src="shared/responsive.js"></script>
 </head>
 <body>
 <div class="app">
@@ -1581,12 +1585,22 @@ var CLASS_LABEL={nonpolar:'Hydrophobic / non-polar',neutral:'Polar, neutral',
 
   function slotFor(key){return document.getElementById('baaSlot-'+key);}
 
+  feedback.setAttribute('role','status');
+  function selectPill(p){
+    if(solved)return;
+    var same=selectedPill===p;clearSelection();
+    if(!same){selectedPill=p;p.classList.add('picked');p.setAttribute('aria-pressed','true');}
+    feedback.textContent=same?'Selection cancelled.':p.getAttribute('aria-label')+' selected. Choose a bond.';
+  }
+  wrap.parentElement.addEventListener('keydown',function(e){if(e.key==='Escape'){clearSelection();feedback.textContent='Selection cancelled.';}});
   function makePill(code){
     var p=el('div','dnd-pill',LABEL[code]);
     p.dataset.val=code;
     p.setAttribute('role','button');
     p.setAttribute('tabindex','0');
     p.setAttribute('aria-label',DESC[code]);
+    p.setAttribute('aria-pressed','false');
+    p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();selectPill(p);}});
     p.addEventListener('pointerdown',onPointerDown);
     return p;
   }
@@ -1595,16 +1609,16 @@ var CLASS_LABEL={nonpolar:'Hydrophobic / non-polar',neutral:'Polar, neutral',
     var slot=slotFor(key);
     slot.innerHTML='';slot.appendChild(pill);
     slot.classList.add('filled');pill.classList.add('placed');
-    slotState[key]=pill;
+    slotState[key]=pill;slot.setAttribute('aria-label',key+' bond: '+pill.getAttribute('aria-label'));
   }
   function clearSlot(key){
     var slot=slotFor(key);
     slot.innerHTML='';slot.classList.remove('filled','correct','incorrect');
-    slotState[key]=null;
+    slotState[key]=null;slot.setAttribute('aria-label',key+' bond, empty');
   }
   function allFilled(){return Object.keys(slotState).every(function(k){return !!slotState[k];});}
   function updateCheckState(){checkBtn.disabled=!allFilled()||solved;}
-  function clearSelection(){if(selectedPill)selectedPill.classList.remove('picked');selectedPill=null;}
+  function clearSelection(){if(selectedPill){selectedPill.classList.remove('picked');selectedPill.setAttribute('aria-pressed','false');}selectedPill=null;}
   function moveGhost(x,y){if(ghost){ghost.style.left=x+'px';ghost.style.top=y+'px';}}
 
   function dropPill(pill,from,toKey){
@@ -1665,16 +1679,19 @@ var CLASS_LABEL={nonpolar:'Hydrophobic / non-polar',neutral:'Polar, neutral',
       dropPill(dragPill,dragFrom,slotEl?slotEl.dataset.slot:null);
     } else {
       /* a tap, not a drag: tap-to-place fallback */
-      if(selectedPill===dragPill){clearSelection();}
-      else{clearSelection();selectedPill=dragPill;dragPill.classList.add('picked');}
+      selectPill(dragPill);
     }
     dragPill=null;dragFrom=null;moved=false;
   }
   SLOTS.forEach(function(s){
-    s.addEventListener('click',function(){
-      if(!selectedPill)return;
+    s.tabIndex=0;s.setAttribute('role','button');
+    s.addEventListener('keydown',function(e){if(e.target===s&&(e.key==='Enter'||e.key===' ')){e.preventDefault();s.click();}});
+    s.addEventListener('click',function(e){
+      if(e.target.closest('.dnd-pill')||solved||!selectedPill)return;
       var from=selectedPill.parentElement===tray?'tray':selectedPill.parentElement.dataset.slot;
+      var name=selectedPill.getAttribute('aria-label');
       dropPill(selectedPill,from,s.dataset.slot);clearSelection();
+      feedback.textContent=name+' placed on '+s.dataset.slot+' bond.';s.focus();
     });
   });
   tray.addEventListener('click',function(e){
