@@ -154,7 +154,18 @@ function goTo(i){
   current=i;var key=FLOW[i].key;
   document.querySelectorAll('.section').forEach(function(s){s.classList.toggle('active',s.dataset.key===key);});
   paintNav();
-  window.scrollTo({top:0,behavior:'smooth'});
+  /* Wait until menu handlers and initial page scripts have finished so the
+     heading is positioned after responsive navigation has collapsed. */
+  requestAnimationFrame(function(){
+    if(FLOW[current].key!==key)return;
+    var section=document.querySelector('.section.active');
+    var heading=section&&(section.querySelector('h1,h2,h3')||section);
+    if(heading){
+      heading.setAttribute('tabindex','-1');
+      heading.focus({preventScroll:true});
+      heading.scrollIntoView({block:'start',behavior:'instant'});
+    }
+  });
   state.lastSection=key;saveState();
   if(typeof LearningRecord!=='undefined')LearningRecord.section(key,FLOW[i].label);
   setSectionParam(key);

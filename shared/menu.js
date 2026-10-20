@@ -57,15 +57,11 @@
   set(false);
   btn.addEventListener('click',function(){set(!document.body.classList.contains('menu-open'));});
 
-  /* Close the menu once the student has actually gone somewhere.
-     In the hub every menu button is a destination. In a companion, a module
-     heading both opens the module and expands its list of sections, so the
-     menu stays open for that click, so the student can pick a section.
-     Any other menu button (a section, a quiz, Start Here) closes it. */
+  /* Destination buttons close the menu; arrows only expand section lists. */
   nav.addEventListener('click',function(e){
     var b=e.target.closest('button');
     if(!mq.matches||!b)return;
-    if(isHub||!b.classList.contains('mod-head')){set(false);window.scrollTo(0,0);}
+    if(isHub||!b.classList.contains('chev-btn')){set(false);window.scrollTo(0,0);}
   },true);
 
   /* Escape closes it; going back to a wide screen resets it. */
