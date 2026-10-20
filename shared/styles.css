@@ -322,14 +322,9 @@ tbody tr:last-child td{border-bottom:0}
 .dnd-slot .dnd-pill{max-width:100%;white-space:normal;overflow-wrap:anywhere}
 .dnd-pill.picked{outline:3px solid var(--green);outline-offset:3px}
 :focus-visible{outline:3px solid #176cb0;outline-offset:3px}
-.mobile-nav-toggle{display:none}
 @media(max-width:640px){
  .dnd-row{flex-direction:column;align-items:stretch}
  .dnd-slot{flex:0 0 auto;width:100%;box-sizing:border-box}
-}
-@media(max-width:900px){
- .mobile-nav-toggle{display:block;margin:10px 0;padding:10px 16px}
- .sidebar.mobile-collapsed>:not(.back-to-hub):not(.mobile-nav-toggle){display:none}
 }
 @media(max-width:640px){
  .home-list{grid-template-columns:minmax(0,1fr)}

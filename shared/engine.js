@@ -25,23 +25,10 @@
         — several figures call el()/shuffle() and read
         `state.activities.*` as soon as they run, not just inside
         click handlers, so both must exist by this point)
-     6. shared/engine.js       (this file — must load last; builds
+     6. shared/engine.js       (this file — builds
         the nav from MODULES and wires every section up)
+     7. shared/menu.js         (loads last; responsive menu controls)
    ============================================================ */
-var mobileSidebar=document.querySelector('.sidebar');
-var mobileNavToggle=document.createElement('button');
-mobileNavToggle.type='button';mobileNavToggle.className='mobile-nav-toggle';
-mobileNavToggle.textContent='Section navigation';
-mobileNavToggle.setAttribute('aria-expanded','false');
-mobileNavToggle.setAttribute('aria-controls','nav');
-if(mobileSidebar){
- mobileSidebar.classList.add('mobile-collapsed');
- mobileSidebar.insertBefore(mobileNavToggle,mobileSidebar.firstChild);
- mobileNavToggle.onclick=function(){
-  var collapsed=mobileSidebar.classList.toggle('mobile-collapsed');
-  mobileNavToggle.setAttribute('aria-expanded',String(!collapsed));
- };
-}
 var current=0,navEl=document.getElementById('nav');
 var navLockBadges={};
 MODULES.forEach(function(mod,mi){
@@ -167,13 +154,7 @@ function goTo(i){
   current=i;var key=FLOW[i].key;
   document.querySelectorAll('.section').forEach(function(s){s.classList.toggle('active',s.dataset.key===key);});
   paintNav();
-  if(window.matchMedia('(max-width:900px)').matches){
-    mobileSidebar.classList.add('mobile-collapsed');
-    mobileNavToggle.setAttribute('aria-expanded','false');
-    var active=document.querySelector('.section.active');
-    var heading=active&&(active.querySelector('h1,h2,h3')||active);
-    if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});heading.scrollIntoView({block:'start'});}
-  }else{window.scrollTo({top:0,behavior:'smooth'});}
+  window.scrollTo({top:0,behavior:'smooth'});
   state.lastSection=key;saveState();
   if(typeof LearningRecord!=='undefined')LearningRecord.section(key,FLOW[i].label);
   setSectionParam(key);
@@ -676,13 +657,7 @@ document.querySelectorAll('.quiz-body').forEach(function(body){
 
   sec.querySelector('.q-submit').onclick=grade;
   sec.querySelector('.q-retake').onclick=function(){mode='normal';render(buildSet(quizId));
-    if(window.matchMedia('(max-width:900px)').matches){
-    mobileSidebar.classList.add('mobile-collapsed');
-    mobileNavToggle.setAttribute('aria-expanded','false');
-    var active=document.querySelector('.section.active');
-    var heading=active&&(active.querySelector('h1,h2,h3')||active);
-    if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});heading.scrollIntoView({block:'start'});}
-  }else{window.scrollTo({top:0,behavior:'smooth'});}};
+    window.scrollTo({top:0,behavior:'smooth'});};
   render(buildSet(quizId));
 });
 document.getElementById('resetBtn').onclick=function(){
